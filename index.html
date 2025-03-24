@@ -116,48 +116,82 @@ html
     <div class="content">
         <video id="demoVideo" 
                style="width:100%;height:auto"
-               autoplay
                muted
                playsinline
                loop
                preload="auto"
                poster="./assets/demo_preview.jpg">
-        <source src="./assets/demo_video.mp4" type="video/mp4">
-        <source src="./assets/demo_video.webm" type="video/webm">
+            <source src="./assets/demo_video.mp4" type="video/mp4">
+            <source src="./assets/demo_video.webm" type="video/webm">
         </video>
+        <div class="play-control">
+            <div class="play-button">▶</div>
+        </div>
         
         <script>
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('demoVideo');
-            
-            // 首次交互后解除静音
+            const playButton = document.querySelector('.play-button');
             let isMuted = true;
+    
+            // 播放/暂停控制
+            playButton.addEventListener('click', function() {
+                if (video.paused) {
+                    video.play();
+                    playButton.textContent = '❚❚';
+                } else {
+                    video.pause();
+                    playButton.textContent = '▶';
+                }
+            });
+    
+            // 静音控制（保留原有逻辑）
             document.addEventListener('click', function() {
                 if (isMuted) {
                     video.muted = false;
                     isMuted = false;
                 }
             });
-        
-            // 兼容Edge的自动播放处理
+    
+            // 自动播放异常处理
             const playPromise = video.play();
-            
             if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    // 显示播放按钮
-                    const playButton = document.createElement('div');
-                    playButton.innerHTML = '▶';
-                    playButton.style = 'position:absolute; cursor:pointer; font-size:3em;';
-                    video.parentElement.appendChild(playButton);
-                    
-                    playButton.addEventListener('click', () => {
-                        video.play();
-                        playButton.remove();
-                    });
+                playPromise.catch(() => {
+                    playButton.style.display = 'flex';
                 });
             }
+    
+            // 视频状态同步按钮
+            video.addEventListener('play', () => playButton.textContent = '❚❚');
+            video.addEventListener('pause', () => playButton.textContent = '▶');
         });
         </script>
+        <style>
+            .play-control {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 2;
+            }
+            .play-button {
+                width: 60px;
+                height: 60px;
+                background: rgba(0, 0, 0, 0.6);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 28px;
+                cursor: pointer;
+                transition: transform 0.3s, background 0.3s;
+            }
+            .play-button:hover {
+                transform: scale(1.1);
+                background: rgba(0, 0, 0, 0.8);
+            }
+        </style>
     </div>
 
     <div class="content">
