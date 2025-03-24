@@ -98,8 +98,9 @@ html
             Diffusion models has emerged as a powerful framework for tasks like image controllable generation and dense prediction. However, existing models often struggle to capture underlying semantics (e.g., edges, textures, shapes) and effectively utilize in-context learning, limiting their contextual understanding and image generation quality. Additionally, high computational costs and slow inference speeds hinder their real-time applicability. To address these challenges, we propose Underlying Semantic Diffusion (US-Diffusion), an enhanced diffusion model that boosts underlying semantics learning, computational efficiency, and in-context learning capabilities on multi-task scenarios. We introduce Separate \& Gather Adapter (SGA), which decouples input conditions for different tasks while sharing the architecture, enabling better in-context learning and generalization across diverse visual domains. We also present a Feedback-Aided Learning (FAL) framework, which leverages feedback signals to guide the model in capturing semantic details and dynamically adapting to task-specific contextual cues. Furthermore, we propose a plug-and-play Efficient Sampling Strategy (ESS) for dense sampling at time steps with high-noise levels, which aims at optimizing training and inference efficiency while maintaining strong in-context learning performance. Experimental results demonstrate that US-Diffusion outperforms the state-of-the-art method, achieving an average reduction of 7.47 in FID on Map2Image tasks and an average reduction of 0.026 in RMSE on Image2Map tasks, while achieving approximately 9.45× faster inference speed. Our method also demonstrates superior training efficiency and in-context learning capabilities, excelling in new datasets and tasks, highlighting its robustness and adaptability across diverse visual domains.
         </p>
         <div class="figure-container">
-            <img src="./assets/motivation.png" class="figure" alt="Method motivation">
-        </div> <!-- 仅保留一个闭合标签 --
+            <img src="./assets/motivation.png" class="figure">
+            </div>
+        </div>
     </div>
 
     <div class="content">
@@ -113,91 +114,48 @@ html
     </div>
 
     <div class="content">
-        <div style="position: relative; width: 100%; margin: 20px auto;">
-            <video id="demoVideo" 
-                   style="width:100%;height:auto; background: #000;"
-                   muted
-                   playsinline
-                   loop
-                   preload="auto"
-                   poster="./assets/demo_preview.jpg">
-                <source src="./assets/demo_video.mp4" type="video/mp4">
-                <source src="./assets/demo_video.webm" type="video/webm">
-            </video>
-            
-            <!-- 新增播放控制按钮 -->
-            <div id="playButton" style="position: absolute; 
-                                      left: 50%; 
-                                      top: 50%; 
-                                      transform: translate(-50%, -50%);
-                                      cursor: pointer;
-                                      opacity: 0.8;
-                                      transition: opacity 0.3s;
-                                      display: none;">
-                <svg width="80" height="80" viewBox="0 0 24 24" 
-                     style="filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));">
-                    <circle cx="12" cy="12" r="10" fill="#fff"/>
-                    <path id="playIcon" fill="#333" d="M8 5v14l11-7z"/>
-                </svg>
-            </div>
-        </div>
-    
+        <video id="demoVideo" 
+               style="width:100%;height:auto"
+               autoplay
+               muted
+               playsinline
+               loop
+               preload="auto"
+               poster="./assets/demo_preview.jpg">
+        <source src="./assets/demo_video.mp4" type="video/mp4">
+        <source src="./assets/demo_video.webm" type="video/webm">
+        </video>
+        
         <script>
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('demoVideo');
-            const playButton = document.getElementById('playButton');
-            const playIcon = document.getElementById('playIcon');
-            let isPlaying = false;
-    
-            // 按钮点击处理
-            playButton.addEventListener('click', function() {
-                if (video.paused) {
-                    video.play();
-                    isPlaying = true;
-                } else {
-                    video.pause();
-                    isPlaying = false;
-                }
-            });
-    
-            // 视频状态监听
-            video.addEventListener('play', () => {
-                playButton.style.display = 'none';
-                isPlaying = true;
-            });
-    
-            video.addEventListener('pause', () => {
-                playButton.style.display = 'block';
-                isPlaying = false;
-            });
-    
-            // 首次自动播放尝试
-            const playPromise = video.play().catch(() => {
-                playButton.style.display = 'block';
-            });
-    
-            // 用户交互后解除静音
-            document.addEventListener('click', function initAudio() {
-                if (video.muted) {
+            
+            // 首次交互后解除静音
+            let isMuted = true;
+            document.addEventListener('click', function() {
+                if (isMuted) {
                     video.muted = false;
-                    document.removeEventListener('click', initAudio);
+                    isMuted = false;
                 }
             });
-    
-            // 空格键控制
-            document.addEventListener('keydown', (e) => {
-                if (e.code === 'Space') {
-                    e.preventDefault();
-                    playButton.click();
-                }
-            });
-    
-            // 触摸设备优化
-            video.addEventListener('touchstart', () => {
-                if (!isPlaying) {
-                    video.play();
-                }
-            });
+        
+            // 兼容Edge的自动播放处理
+            const playPromise = video.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // 显示播放按钮
+                    const playButton = document.createElement('div');
+                    playButton.innerHTML = '▶';
+                    playButton.style = 'position:absolute; cursor:pointer; font-size:3em;';
+                    video.parentElement.appendChild(playButton);
+                    
+                    playButton.addEventListener('click', () => {
+                        video.play();
+                        playButton.remove();
+                    });
+                });
+            }
         });
         </script>
     </div>
@@ -225,4 +183,4 @@ html
 </pre>
     </div>
 </body>
-</html>
+</html> 
