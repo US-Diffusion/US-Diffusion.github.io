@@ -7,7 +7,6 @@ html
     <title>Underlying Semantic Diffusion for Effective and Efficient In-Context Learning</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <style>
-        /* CSS Document */
         body {
             font-family: 'Open Sans', sans-serif;
             font-weight: 300;
@@ -74,9 +73,13 @@ html
             white-space: pre-wrap;
             margin: 20px 0;
         }
-
-        video::-webkit-media-controls { display: none !important; }
-        video { width: 100%; margin: 20px auto; }
+        video {
+            width: 100%; 
+            margin: 20px auto;
+        }
+        video::-webkit-media-controls { 
+            display: none !important; 
+        }
     </style>
 </head>
 <body>
@@ -99,7 +102,6 @@ html
         </p>
         <div class="figure-container">
             <img src="./assets/motivation.png" class="figure">
-            </div>
         </div>
     </div>
 
@@ -122,41 +124,38 @@ html
                loop
                preload="auto"
                poster="./assets/demo_preview.jpg">
-        <source src="./assets/demo_video.mp4" type="video/mp4">
-        <source src="./assets/demo_video.webm" type="video/webm">
+            <source src="./assets/demo_video.mp4" type="video/mp4">
+            <source src="./assets/demo_video.webm" type="video/webm">
         </video>
         
         <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const video = document.getElementById('demoVideo');
-            
-            // 首次交互后解除静音
-            let isMuted = true;
-            document.addEventListener('click', function() {
-                if (isMuted) {
-                    video.muted = false;
-                    isMuted = false;
+            document.addEventListener('DOMContentLoaded', function() {
+                const video = document.getElementById('demoVideo');
+                let isMuted = true;
+                
+                document.addEventListener('click', function() {
+                    if (isMuted) {
+                        video.muted = false;
+                        isMuted = false;
+                    }
+                });
+
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        const playButton = document.createElement('div');
+                        playButton.innerHTML = '▶';
+                        playButton.style.cssText = 'position:absolute; cursor:pointer; font-size:3em; transform: translate(50%, -50%);';
+                        video.parentElement.style.position = 'relative';
+                        video.parentElement.appendChild(playButton);
+
+                        playButton.addEventListener('click', () => {
+                            video.play();
+                            playButton.remove();
+                        });
+                    });
                 }
             });
-        
-            // 兼容Edge的自动播放处理
-            const playPromise = video.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    // 显示播放按钮
-                    const playButton = document.createElement('div');
-                    playButton.innerHTML = '▶';
-                    playButton.style = 'position:absolute; cursor:pointer; font-size:3em;';
-                    video.parentElement.appendChild(playButton);
-                    
-                    playButton.addEventListener('click', () => {
-                        video.play();
-                        playButton.remove();
-                    });
-                });
-            }
-        });
         </script>
     </div>
 
@@ -179,8 +178,7 @@ html
   author={Ji, Zhong and Cao, Weilong and Zhang, Yan and Pang, Yanwei and Han, Jungong and Li, Xuelong},
   journal={arXiv preprint arXiv:2503.04050},
   year={2025}
-}
-</pre>
+}</pre>
     </div>
 </body>
-</html> 
+</html>
