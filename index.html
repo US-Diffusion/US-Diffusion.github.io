@@ -73,12 +73,21 @@ html
             white-space: pre-wrap;
             margin: 20px 0;
         }
-        video {
-            width: 100%; 
-            margin: 20px auto;
+        /* 新增视频容器样式 */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 宽高比 */
+            margin: 20px 0;
         }
-        video::-webkit-media-controls { 
-            display: none !important; 
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
         }
     </style>
 </head>
@@ -116,17 +125,18 @@ html
     </div>
 
     <div class="content">
-        <video id="demoVideo" 
-               style="width:100%;height:auto"
-               autoplay
-               muted
-               playsinline
-               loop
-               preload="auto"
-               poster="./assets/demo_preview.jpg">
-            <source src="./assets/demo_video.mp4" type="video/mp4">
-            <source src="./assets/demo_video.webm" type="video/webm">
-        </video>
+        <div class="video-container">
+            <video id="demoVideo"
+                   autoplay
+                   muted
+                   playsinline
+                   loop
+                   preload="auto"
+                   poster="./assets/demo_preview.jpg">
+                <source src="./assets/demo_video.mp4" type="video/mp4">
+                <source src="./assets/demo_video.webm" type="video/webm">
+            </video>
+        </div>
         
         <script>
             document.addEventListener('DOMContentLoaded', function() {
