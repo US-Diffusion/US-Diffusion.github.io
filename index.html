@@ -4,137 +4,257 @@ html
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Underlying Semantic Diffusion for Effective and Efficient In-Context Learning</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
     <style>
-        /* CSS Document */
+        :root {
+            --primary-color: #224b8d;
+            --secondary-color: #f5f5f5;
+        }
+
         body {
             font-family: 'Open Sans', sans-serif;
             font-weight: 300;
             background-color: #fff;
-        }
-        .content {
-            width: 1000px;
-            padding: 25px 50px;
-            margin: 25px auto;
-            background-color: white;
-            box-shadow: 0px 0px 10px #999;
-            border-radius: 15px;
-        }
-        a, a:visited {
-            color: #224b8d;
-            font-weight: 300;
-            text-decoration: none;
-        }
-        h1 {
-            text-align: center;
-            font-size: 35px;
-            font-weight: 300;
-            margin-bottom: 30px;
-        }
-        h2 {
-            font-size: 30px;
-            font-weight: 300;
-            text-align: center;
-            margin: 40px 0;
-        }
-        p {
-            line-height: 25px;
-            text-align: justify;
-            font-family: "Times New Roman", Times, serif;
-            font-size: 18.8px;
-            margin: 20px 0;
-        }
-        .figure-container {
-            text-align: center;
-            margin: 30px 0;
-        }
-        .figure {
-            width: 100%;
-            margin: 15px 0;
-        }
-        .caption {
-            font-style: italic;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        .links {
-            text-align: center;
-            margin: 30px 0;
-        }
-        .links a {
-            margin: 0 15px;
-            font-weight: bold;
-        }
-        .bibtex-code {
-            background-color: #f5f5f5;
-            padding: 20px;
-            border-radius: 5px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            margin: 20px 0;
+            margin: 0;
+            line-height: 1.6;
         }
 
-        video::-webkit-media-controls { display: none !important; }
-        video { width: 100%; margin: 20px auto; }
+        .content {
+            max-width: 1100px;
+            padding: 2rem;
+            margin: 2rem auto;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 12px;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin: 0 0 1rem;
+            color: var(--primary-color);
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 400;
+            color: #333;
+            margin: 2rem 0 1.5rem;
+        }
+
+        .authors {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .links a {
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            background: var(--primary-color);
+            color: white !important;
+            transition: transform 0.3s ease;
+            text-decoration: none !important;
+        }
+
+        .links a:hover {
+            transform: translateY(-2px);
+            background: #1a3a6b;
+        }
+
+        .figure-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .figure {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .caption {
+            font-style: italic;
+            color: #666;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .video-container {
+            position: relative;
+            margin: 2rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            background: #000;
+        }
+
+        .play-control {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .play-button:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        .bibtex-code {
+            background: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .play-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="content">
-        <h1>Underlying Semantic Diffusion for Effective and Efficient In-Context Learning</h1>
-        <div style="text-align: center; margin-bottom: 30px; font-size: 20px;">
-            Zhong Ji<sup>1</sup>, Weilong Cao<sup>1</sup>, Yan Zhang<sup>1</sup>, Yanwei Pang<sup>1</sup>, Jungong Han, Xuelong Li<br>
-            <sup>1</sup>Tianjin University, Tianjin, China
-        </div>
-        <div class="links">
-            <a href="https://arxiv.org/abs/2503.04050" target="_blank">[Paper]</a>
-            <a href="https://github.com/dragon-cao/US-Diffusion" target="_blank">[Code]</a>
-        </div>
-    </div>
-
-    <div class="content">
-        <h2>Abstract</h2>
-        <p>
-            Diffusion models has emerged as a powerful framework for tasks like image controllable generation and dense prediction. However, existing models often struggle to capture underlying semantics (e.g., edges, textures, shapes) and effectively utilize in-context learning, limiting their contextual understanding and image generation quality. Additionally, high computational costs and slow inference speeds hinder their real-time applicability. To address these challenges, we propose Underlying Semantic Diffusion (US-Diffusion), an enhanced diffusion model that boosts underlying semantics learning, computational efficiency, and in-context learning capabilities on multi-task scenarios. We introduce Separate \& Gather Adapter (SGA), which decouples input conditions for different tasks while sharing the architecture, enabling better in-context learning and generalization across diverse visual domains. We also present a Feedback-Aided Learning (FAL) framework, which leverages feedback signals to guide the model in capturing semantic details and dynamically adapting to task-specific contextual cues. Furthermore, we propose a plug-and-play Efficient Sampling Strategy (ESS) for dense sampling at time steps with high-noise levels, which aims at optimizing training and inference efficiency while maintaining strong in-context learning performance. Experimental results demonstrate that US-Diffusion outperforms the state-of-the-art method, achieving an average reduction of 7.47 in FID on Map2Image tasks and an average reduction of 0.026 in RMSE on Image2Map tasks, while achieving approximately 9.45× faster inference speed. Our method also demonstrates superior training efficiency and in-context learning capabilities, excelling in new datasets and tasks, highlighting its robustness and adaptability across diverse visual domains.
-        </p>
-        <div class="figure-container">
-            <img src="./assets/motivation.png" class="figure">
+    <header>
+        <div class="content">
+            <h1>Underlying Semantic Diffusion for Effective and Efficient In-Context Learning</h1>
+            <div class="authors">
+                Zhong Ji<sup>1</sup>, Weilong Cao<sup>1</sup>, Yan Zhang<sup>1</sup>, Yanwei Pang<sup>1</sup>, Jungong Han, Xuelong Li<br>
+                <sup>1</sup>Tianjin University, Tianjin, China
+            </div>
+            <div class="links">
+                <a href="https://arxiv.org/abs/2503.04050" target="_blank">Paper</a>
+                <a href="https://github.com/dragon-cao/US-Diffusion" target="_blank">Code</a>
             </div>
         </div>
-    </div>
+    </header>
 
-    <div class="content">
-        <h2>Framework</h2>
-        <p>
-            The proposed framework, US-Diffusion, aims to overcome the limitations of current diffusion models in terms of generation quality and computational efficiency. As illustrated in this figure, the framework comprises four main components: the widely-used Stable Diffusion (SD) model, the ControlNet module equipped with our Separate & Gather Adapter (SGA), the proposed Feedback-Aided Learning (FAL) framework, and the conditional input component. Together, these components enhance the model's ability to better capture underlying semantic information and improve generation quality. To tackle the issue of slow inference speed that is typical in diffusion models, we also propose an innovative Efficient Sampling Strategy (ESS) employed during the noise-adding and denoising stages.
-        </p>
-        <div class="figure-container">
-            <img src="./assets/framework.png" class="figure">
-        </div>
-    </div>
+    <main>
+        <section class="content">
+            <h2>Abstract</h2>
+            <p>
+                Diffusion models has emerged as a powerful framework for tasks like image controllable generation and dense prediction. However, existing models often struggle to capture underlying semantics (e.g., edges, textures, shapes) and effectively utilize in-context learning, limiting their contextual understanding and image generation quality. Additionally, high computational costs and slow inference speeds hinder their real-time applicability. To address these challenges, we propose Underlying Semantic Diffusion (US-Diffusion), an enhanced diffusion model that boosts underlying semantics learning, computational efficiency, and in-context learning capabilities on multi-task scenarios. We introduce Separate & Gather Adapter (SGA), which decouples input conditions for different tasks while sharing the architecture, enabling better in-context learning and generalization across diverse visual domains. We also present a Feedback-Aided Learning (FAL) framework, which leverages feedback signals to guide the model in capturing semantic details and dynamically adapting to task-specific contextual cues. Furthermore, we propose a plug-and-play Efficient Sampling Strategy (ESS) for dense sampling at time steps with high-noise levels, which aims at optimizing training and inference efficiency while maintaining strong in-context learning performance. Experimental results demonstrate that US-Diffusion outperforms the state-of-the-art method, achieving an average reduction of 7.47 in FID on Map2Image tasks and an average reduction of 0.026 in RMSE on Image2Map tasks, while achieving approximately 9.45× faster inference speed. Our method also demonstrates superior training efficiency and in-context learning capabilities, excelling in new datasets and tasks, highlighting its robustness and adaptability across diverse visual domains.
+            </p>
+            <div class="figure-container">
+                <img src="./assets/motivation.png" alt="Method Motivation" class="figure">
+                <div class="caption">Figure 1: Method motivation and key contributions</div>
+            </div>
+        </section>
 
-    <div class="content">
-        <video id="demoVideo" 
-               style="width:100%;height:auto"
-               muted
-               playsinline
-               loop
-               preload="auto"
-               poster="./assets/demo_preview.jpg">
-            <source src="./assets/demo_video.mp4" type="video/mp4">
-            <source src="./assets/demo_video.webm" type="video/webm">
-        </video>
-        <div class="play-control">
-            <div class="play-button">▶</div>
-        </div>
-        
-        <script>
+        <section class="content">
+            <h2>Framework</h2>
+            <p>
+                The proposed framework, US-Diffusion, aims to overcome the limitations of current diffusion models in terms of generation quality and computational efficiency. As illustrated in this figure, the framework comprises four main components: the widely-used Stable Diffusion (SD) model, the ControlNet module equipped with our Separate & Gather Adapter (SGA), the proposed Feedback-Aided Learning (FAL) framework, and the conditional input component. Together, these components enhance the model's ability to better capture underlying semantic information and improve generation quality. To tackle the issue of slow inference speed that is typical in diffusion models, we also propose an innovative Efficient Sampling Strategy (ESS) employed during the noise-adding and denoising stages.
+            </p>
+            <div class="figure-container">
+                <img src="./assets/framework.png" alt="Framework Diagram" class="figure">
+                <div class="caption">Figure 2: Overall framework architecture</div>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="video-container">
+                <video id="demoVideo" muted playsinline loop preload="auto" poster="./assets/demo_preview.jpg">
+                    <source src="./assets/demo_video.mp4" type="video/mp4">
+                    <source src="./assets/demo_video.webm" type="video/webm">
+                    <track kind="captions" src="./assets/captions.vtt" srclang="en" label="English">
+                </video>
+                <div class="play-control">
+                    <button class="play-button" aria-label="Play/Pause">▶</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="content">
+            <h2>Experimental Results</h2>
+            <div class="figure-container">
+                <img src="./assets/result1.png" alt="Map2Image Results" class="figure">
+                <div class="caption">Figure 3: Results comparison on Map2Image tasks</div>
+            </div>
+            <div class="figure-container">
+                <img src="./assets/result2.png" alt="Image2Map Results" class="figure">
+                <div class="caption">Figure 4: Results comparison on Image2Map tasks</div>
+            </div>
+        </section>
+
+        <section class="content">
+            <h2>BibTeX</h2>
+            <pre class="bibtex-code">@article{ji2025underlying,
+  title={Underlying Semantic Diffusion for Effective and Efficient In-Context Learning},
+  author={Ji, Zhong and Cao, Weilong and Zhang, Yan and Pang, Yanwei and Han, Jungong and Li, Xuelong},
+  journal={arXiv preprint arXiv:2503.04050},
+  year={2025}
+}</pre>
+        </section>
+    </main>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('demoVideo');
             const playButton = document.querySelector('.play-button');
             let isMuted = true;
-    
-            // 播放/暂停控制
+
+            // 视频播放控制
             playButton.addEventListener('click', function() {
                 if (video.paused) {
                     video.play();
@@ -144,77 +264,26 @@ html
                     playButton.textContent = '▶';
                 }
             });
-    
-            // 静音控制（保留原有逻辑）
-            document.addEventListener('click', function() {
-                if (isMuted) {
-                    video.muted = false;
-                    isMuted = false;
-                }
-            });
-    
-            // 自动播放异常处理
+
+            // 自动播放处理
             const playPromise = video.play();
             if (playPromise !== undefined) {
-                playPromise.catch(() => {
+                playPromise.catch(error => {
+                    console.log('Autoplay prevented:', error);
                     playButton.style.display = 'flex';
                 });
             }
-    
-            // 视频状态同步按钮
+
+            // 视频状态同步
             video.addEventListener('play', () => playButton.textContent = '❚❚');
             video.addEventListener('pause', () => playButton.textContent = '▶');
+            
+            // 点击视频控制静音
+            video.addEventListener('click', function() {
+                video.muted = !video.muted;
+                isMuted = video.muted;
+            });
         });
-        </script>
-        <style>
-            .play-control {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                z-index: 2;
-            }
-            .play-button {
-                width: 60px;
-                height: 60px;
-                background: rgba(0, 0, 0, 0.6);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 28px;
-                cursor: pointer;
-                transition: transform 0.3s, background 0.3s;
-            }
-            .play-button:hover {
-                transform: scale(1.1);
-                background: rgba(0, 0, 0, 0.8);
-            }
-        </style>
-    </div>
-
-    <div class="content">
-        <h2>Experimental Results</h2>
-        <div class="figure-container">
-            <img src="./assets/result1.png" class="figure">
-            <div class="caption">Map2Image tasks</div>
-        </div>
-        <div class="figure-container">
-            <img src="./assets/result2.png" class="figure">
-            <div class="caption">Image2Map tasks</div>
-        </div>
-    </div>
-
-    <div class="content">
-        <h2>BibTeX</h2>
-        <pre class="bibtex-code">@article{ji2025underlying,
-  title={Underlying Semantic Diffusion for Effective and Efficient In-Context Learning},
-  author={Ji, Zhong and Cao, Weilong and Zhang, Yan and Pang, Yanwei and Han, Jungong and Li, Xuelong},
-  journal={arXiv preprint arXiv:2503.04050},
-  year={2025}
-}
-</pre>
-    </div>
+    </script>
 </body>
 </html>
